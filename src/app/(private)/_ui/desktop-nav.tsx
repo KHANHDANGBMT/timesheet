@@ -2,12 +2,7 @@ import Link from "next/link";
 import { NavItem } from "./nav-item";
 import {
   ChartBarStacked,
-  Home,
-  LineChart,
-  Package,
-  Settings,
-  ShoppingCart,
-  Users2,
+  Home, Settings
 } from "lucide-react";
 import {
   Tooltip,
