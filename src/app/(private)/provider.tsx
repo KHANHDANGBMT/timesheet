@@ -12,7 +12,7 @@ export default function PrivateProvider({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
         <TooltipProvider>{children}</TooltipProvider>
-        <Toaster/>
+        <Toaster />
       </SessionProvider>
     </QueryClientProvider>
   );

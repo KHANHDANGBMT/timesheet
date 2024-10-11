@@ -5,8 +5,7 @@ import PrivateProvider from "./provider";
 import { ReactNode } from "react";
 import { DesktopNav } from "./_ui/desktop-nav";
 import { MobileNav } from "./_ui/mobi-nav";
-import { DashboardBreadcrumb } from "./_ui/dashboard-breadcrumb";
-import { SearchInput } from "./_ui/search";
+import { DashboardBreadcrumb } from "./_ui/dashboardBreadcrumb";
 import { User } from "./_ui/user";
 
 export default async function PrivateLayout({
@@ -17,7 +16,7 @@ export default async function PrivateLayout({
   const session = await getServerSession();
 
   if (!session) {
-    redirect("/auth/login");
+    redirect("/");
   }
 
   return (
@@ -28,14 +27,14 @@ export default async function PrivateLayout({
           <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <MobileNav />
             <DashboardBreadcrumb />
-            <SearchInput />
-            <User />
+            <div className="ml-auto">
+              <User />
+            </div>
           </header>
           <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40">
             {children}
           </main>
         </div>
-        {/* <Analytics /> */}
       </main>
     </PrivateProvider>
   );

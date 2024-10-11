@@ -5,16 +5,31 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { DialogNewEvent } from "./_ui/dialogNewEvent";
 import { useQuery } from "@tanstack/react-query";
 import { useBoolean } from "usehooks-ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { IEvent } from "@/app/models/event";
+import { IEvent } from "@/models/event";
+import { useBreadcrumbStore } from "@/store/useBreadcrumbStore";
 
 const TimeSheetPage = () => {
+  const { setBreadcrumbs } = useBreadcrumbStore();
   const { setTrue, value, setFalse } = useBoolean(false);
   const [initialEventData, setInitialEventData] = useState<{
     startDate?: string;
     endDate?: string;
   }>({});
+
+
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        label: "Dashboard",
+        href: "/dashboard",
+      },
+      {
+        label: "Time sheet",
+      },
+    ]);
+  }, []);
 
   const { data } = useQuery({
     queryKey: ["get-list-events"],
@@ -26,7 +41,6 @@ const TimeSheetPage = () => {
     return null;
   }
 
-  console.log("🚀 ~ TimeSheetPage ~ data:", data);
   return (
     <>
       <div>

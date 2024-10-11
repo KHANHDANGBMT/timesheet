@@ -1,10 +1,21 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET() {
   try {
-    const groups = await prisma.event.findMany();
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const groups = await prisma.event.findMany({
+      where: {
+        ownerId: session.user.id,
+      },
+    });
     return NextResponse.json(groups);
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
@@ -13,7 +24,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     if (!session || !session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,7 +41,6 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(event);
   } catch (error) {
-    console.log("🚀 ~ POST ~ error:", error);
     return NextResponse.json({ error }, { status: 500 });
   }
 }

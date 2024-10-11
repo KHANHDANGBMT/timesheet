@@ -1,14 +1,24 @@
 "use client";
+import { useBreadcrumbStore } from "@/store/useBreadcrumbStore";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
+  const { setBreadcrumbs } = useBreadcrumbStore();
   const session = useSession();
-  console.log("🚀 ~ DashboardPage ~ session:", session);
+
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        label: "Dashboard",
+      },
+    ]);
+  }, []);
 
   return (
     <div className="p-10 ">
-      <h1 className="text-2xl font-bold">Welcome to your dashboard</h1>
-      <p>You are logged in as {session?.data?.user?.name}</p>
+      <h1 className="text-2xl font-bold">Welcome {session?.data?.user?.name}</h1>
+      <p>You are logged in as {session?.data?.user?.role}</p>
     </div>
   );
 }
